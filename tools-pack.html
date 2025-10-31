@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools Pack - All-in-One Web Utilities</title>
+    <meta name="description" content="Tools Pack offers a comprehensive suite of free online tools including calculators, converters, text utilities, and more.">
+    <meta name="keywords" content="tools, utilities, calculator, converter, text utilities, base64, url encoder, json formatter, password generator, uuid, hash generator, image resizer, color picker, timer, notes">
+    <style>
+        :root {
+            --primary: #0E1E2F;
+            --secondary: #1A2E46;
+            --accent: #4A90E2;
+            --text: #E8E8E8;
+            --text-secondary: #B0B0B0;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --error: #F44336;
+            --card-bg: #15293B;
+            --card-hover: #1D3650;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--primary);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--secondary);
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            color: var(--accent);
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--accent), #67B26F);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .search-container {
+            position: relative;
+            width: 40%;
+            max-width: 500px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: var(--card-bg);
+            color: var(--text);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--accent), #67B26F);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Ad Banner */
+        .ad-banner {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+            border: 1px dashed var(--accent);
+        }
+
+        .ad-banner p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .ad-placeholder {
+            width: 100%;
+            height: 90px;
+            background-color: var(--secondary);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+        }
+
+        /* Tools Grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .tool-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            background-color: var(--card-hover);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .tool-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .tool-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-card p {
+            color: var(--text-secondary);
+            flex-grow: 1;
+        }
+
+        /* Tool Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 2rem auto;
+            max-width: 800px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            background-color: var(--secondary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--accent);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        /* Tool Styles */
+        .tool-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        input, select, textarea, button {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: var(--secondary);
+            color: var(--text);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        }
+
+        button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        button:hover {
+            background-color: #3a7bd5;
+            transform: translateY(-2px);
+        }
+
+        .result {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: var(--secondary);
+            border-radius: 6px;
+            min-height: 60px;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            width: auto;
+            padding: 0.5rem 1rem;
+            margin-top: 0.5rem;
+            background-color: var(--success);
+        }
+
+        .copy-btn:hover {
+            background-color: #3d8b40;
+        }
+
+        .tool-options {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .option-group {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .checkbox-group input {
+            width: auto;
+        }
+
+        /* Command Palette */
+        .command-palette {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 600px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            z-index: 1100;
+            overflow: hidden;
+        }
+
+        .command-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: none;
+            background-color: var(--secondary);
+            color: var(--text);
+            font-size: 1.2rem;
+        }
+
+        .command-input:focus {
+            outline: none;
+        }
+
+        .command-results {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .command-item {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .command-item:hover, .command-item.selected {
+            background-color: var(--secondary);
+        }
+
+        .command-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--secondary);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .copyright {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .search-container {
+                width: 100%;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .modal-content {
+                margin: 1rem auto;
+            }
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-1 { margin-top: 1rem; }
+        .mt-2 { margin-top: 2rem; }
+        .mb-1 { margin-bottom: 1rem; }
+        .mb-2 { margin-bottom: 2rem; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">🧰</div>
+                <h1>Tools Pack</h1>
+            </div>
+            <div class="search-container">
+                <div class="search-icon">🔍</div>
+                <input type="text" class="search-input" id="searchInput" placeholder="Search for tools...">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <h2>All Your Web Tools in One Place</h2>
+            <p>Tools Pack provides a comprehensive suite of free online utilities for developers, designers, and everyday users. All tools work directly in your browser with no installation required.</p>
+        </section>
+
+        <!-- Ad Banner -->
+        <section class="ad-banner">
+            <p>Advertisement</p>
+            <div class="ad-placeholder">
+                <!-- Monetag ad code would go here -->
+                Ad Space (728x90)
+            </div>
+        </section>
+
+        <!-- Tools Grid -->
+        <section class="tools-grid" id="toolsGrid">
+            <!-- Tools will be dynamically inserted here -->
+        </section>
+
+        <!-- Ad Banner -->
+        <section class="ad-banner">
+            <p>Advertisement</p>
+            <div class="ad-placeholder">
+                <!-- Monetag ad code would go here -->
+                Ad Space (728x90)
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact</a>
+                <a href="#">About</a>
+            </div>
+            <p class="copyright">© 2023 Tools Pack. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Tool Modal -->
+    <div class="modal" id="toolModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle"><span id="modalIcon">🧮</span> Calculator</h2>
+                <button class="close-modal" id="closeModal">✕</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Tool content will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Command Palette -->
+    <div class="command-palette" id="commandPalette">
+        <input type="text" class="command-input" id="commandInput" placeholder="Type to search tools...">
+        <div class="command-results" id="commandResults">
+            <!-- Command results will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // Tools data
+        const tools = [
+            {
+                id: 'calculator',
+                name: 'Calculator',
+                icon: '🧮',
+                description: 'Perform basic arithmetic operations',
+                category: 'math'
+            },
+            {
+                id: 'unit-converter',
+                name: 'Unit Converter',
+                icon: '📏',
+                description: 'Convert between different units of measurement',
+                category: 'conversion'
+            },
+            {
+                id: 'text-utilities',
+                name: 'Text Utilities',
+                icon: '📝',
+                description: 'Format and manipulate text with various tools',
+                category: 'text'
+            },
+            {
+                id: 'base64',
+                name: 'Base64 Encode/Decode',
+                icon: '🔒',
+                description: 'Encode and decode Base64 strings',
+                category: 'encoding'
+            },
+            {
+                id: 'url-encoder',
+                name: 'URL Encoder/Decoder',
+                icon: '🔗',
+                description: 'Encode and decode URL components',
+                category: 'encoding'
+            },
+            {
+                id: 'json-formatter',
+                name: 'JSON Formatter',
+                icon: '{}',
+                description: 'Format and validate JSON data',
+                category: 'development'
+            },
+            {
+                id: 'password-generator',
+                name: 'Password Generator',
+                icon: '🔑',
+                description: 'Create secure random passwords',
+                category: 'security'
+            },
+            {
+                id: 'uuid-generator',
+                name: 'UUID Generator',
+                icon: '🆔',
+                description: 'Generate unique identifiers',
+                category: 'development'
+            },
+            {
+                id: 'hash-generator',
+                name: 'Hash Generator',
+                icon: '🔏',
+                description: 'Generate cryptographic hashes',
+                category: 'security'
+            },
+            {
+                id: 'image-resizer',
+                name: 'Image Resizer',
+                icon: '🖼️',
+                description: 'Resize and compress images',
+                category: 'media'
+            },
+            {
+                id: 'color-picker',
+                name: 'Color Picker',
+                icon: '🎨',
+                description: 'Pick colors and check contrast',
+                category: 'design'
+            },
+            {
+                id: 'timer',
+                name: 'Stopwatch & Timer',
+                icon: '⏱️',
+                description: 'Track time with stopwatch and countdown',
+                category: 'productivity'
+            },
+            {
+                id: 'notes',
+                name: 'Quick Notes',
+                icon: '📓',
+                description: 'Take notes with local storage',
+                category: 'productivity'
+            }
+        ];
+
+        // DOM Elements
+        const toolsGrid = document.getElementById('toolsGrid');
+        const searchInput = document.getElementById('searchInput');
+        const toolModal = document.getElementById('toolModal');
+        const closeModal = document.getElementById('closeModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalIcon = document.getElementById('modalIcon');
+        const modalBody = document.getElementById('modalBody');
+        const commandPalette = document.getElementById('commandPalette');
+        const commandInput = document.getElementById('commandInput');
+        const commandResults = document.getElementById('commandResults');
+
+        // Initialize the tools grid
+        function initToolsGrid() {
+            toolsGrid.innerHTML = '';
+            tools.forEach(tool => {
+                const toolCard = document.createElement('div');
+                toolCard.className = 'tool-card';
+                toolCard.innerHTML = `
+                    <div class="tool-icon">${tool.icon}</div>
+                    <h3>${tool.name}</h3>
+                    <p>${tool.description}</p>
+                `;
+                toolCard.addEventListener('click', () => openToolModal(tool.id));
+                toolsGrid.appendChild(toolCard);
+            });
+        }
+
+        // Open tool modal
+        function openToolModal(toolId) {
+            const tool = tools.find(t => t.id === toolId);
+            if (!tool) return;
+            
+            modalTitle.innerHTML = `<span id="modalIcon">${tool.icon}</span> ${tool.name}`;
+            modalBody.innerHTML = getToolContent(toolId);
+            
+            toolModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            // Initialize tool functionality
+            initToolFunctionality(toolId);
+        }
+
+        // Close modal
+        closeModal.addEventListener('click', () => {
+            toolModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === toolModal) {
+                toolModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Search functionality
+        searchInput.addEventListener('input', () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            const toolCards = document.querySelectorAll('.tool-card');
+            
+            toolCards.forEach(card => {
+                const toolName = card.querySelector('h3').textContent.toLowerCase();
+                const toolDescription = card.querySelector('p').textContent.toLowerCase();
+                
+                if (toolName.includes(searchTerm) || toolDescription.includes(searchTerm)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Command palette functionality
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                commandPalette.style.display = 'block';
+                commandInput.focus();
+                updateCommandResults();
+            }
+            
+            if (e.key === 'Escape') {
+                commandPalette.style.display = 'none';
+            }
+        });
+
+        commandInput.addEventListener('input', updateCommandResults);
+
+        function updateCommandResults() {
+            const searchTerm = commandInput.value.toLowerCase();
+            commandResults.innerHTML = '';
+            
+            const filteredTools = tools.filter(tool => 
+                tool.name.toLowerCase().includes(searchTerm) || 
+                tool.description.toLowerCase().includes(searchTerm)
+            );
+            
+            filteredTools.forEach(tool => {
+                const commandItem = document.createElement('div');
+                commandItem.className = 'command-item';
+                commandItem.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <span>${tool.icon}</span>
+                        <div>
+                            <div style="font-weight: 600;">${tool.name}</div>
+                            <div style="font-size: 0.9rem; color: var(--text-secondary);">${tool.description}</div>
+                        </div>
+                    </div>
+                `;
+                commandItem.addEventListener('click', () => {
+                    openToolModal(tool.id);
+                    commandPalette.style.display = 'none';
+                    commandInput.value = '';
+                });
+                commandResults.appendChild(commandItem);
+            });
+            
+            if (filteredTools.length === 0) {
+                const noResults = document.createElement('div');
+                noResults.className = 'command-item text-center';
+                noResults.textContent = 'No tools found';
+                commandResults.appendChild(noResults);
+            }
+        }
+
+        // Get tool content based on tool ID
+        function getToolContent(toolId) {
+            switch (toolId) {
+                case 'calculator':
+                    return `
+                        <div class="tool-section">
+                            <div class="calculator">
+                                <input type="text" id="calcDisplay" class="input-group" readonly>
+                                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem;">
+                                    <button onclick="clearCalc()">C</button>
+                                    <button onclick="appendToCalc('/')">/</button>
+                                    <button onclick="appendToCalc('*')">×</button>
+                                    <button onclick="appendToCalc('-')">-</button>
+                                    <button onclick="appendToCalc('7')">7</button>
+                                    <button onclick="appendToCalc('8')">8</button>
+                                    <button onclick="appendToCalc('9')">9</button>
+                                    <button onclick="appendToCalc('+')" style="grid-row: span 2;">+</button>
+                                    <button onclick="appendToCalc('4')">4</button>
+                                    <button onclick="appendToCalc('5')">5</button>
+                                    <button onclick="appendToCalc('6')">6</button>
+                                    <button onclick="appendToCalc('1')">1</button>
+                                    <button onclick="appendToCalc('2')">2</button>
+                                    <button onclick="appendToCalc('3')">3</button>
+                                    <button onclick="calculate()" style="grid-row: span 2;">=</button>
+                                    <button onclick="appendToCalc('0')" style="grid-column: span 2;">0</button>
+                                    <button onclick="appendToCalc('.')">.</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                case 'unit-converter':
+                    return `
+                        <div class="tool-section">
+                            <div class="input-group">
+                                <label for="converterValue">Value</label>
+                                <input type="number" id="converterValue" value="1">
+                            </div>
+                            <div class="tool-options">
+                                <div class="option-group">
+                                    <label for="converterFrom">From</label>
+                                    <select id="converterFrom">
+                                        <option value="meter">Meter</option>
+                                        <option value="kilometer">Kilometer</option>
+                                        <option value="centimeter">Centimeter</option>
+                                        <option value="millimeter">Millimeter</option>
+                                        <option value="mile">Mile</option>
+                                        <option value="yard">Yard</option>
+                                        <option value="foot">Foot</option>
+                                        <option value="inch">Inch</option>
+                                        <option value="celsius">Celsius</option>
+                                        <option value="fahrenheit">Fahrenheit</option>
+                                        <option value="kelvin">Kelvin</option>
+                                        <option value="kilogram">Kilogram</option>
+                                        <option value="gram">Gram</option>
+                                        <option value="pound">Pound</option>
+                                        <option value="ounce">Ounce</option>
+                                    </select>
+                                </div>
+                                <div class="option-group">
+                                    <label for="converterTo">To</label>
+                                    <select id="converterTo">
+                                        <option value="meter">Meter</option>
+                                        <option value="kilometer">Kilometer</option>
+                                        <option value="centimeter">Centimeter</option>
+                                        <option value="millimeter">Millimeter</option>
+                                        <option value="mile">Mile</option>
+                                        <option value="yard">Yard</option>
+                                        <option value="foot">Foot</option>
+                                        <option value="inch">Inch</option>
+                                        <option value="celsius">Celsius</option>
+                                        <option value="fahrenheit">Fahrenheit</option>
+                                        <option value="kelvin">Kelvin</option>
+                                        <option value="kilogram">Kilogram</option>
+                                        <option value="gram">Gram</option>
+                                        <option value="pound">Pound</option>
+                                        <option value="ounce">Ounce</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button onclick="convertUnits()">Convert</button>
+                            <div class="result" id="converterResult">Result will appear here</div>
+                        </div>
+                    `;
+                case 'text-utilities':
+                    return `
+                        <div class="tool-section">
+                            <div class="input-group">
+                                <label for="textInput">Input Text</label>
+                                <textarea id="textInput" rows="5" placeholder="Enter your text here"></textarea>
+                            </div>
+                            <div class="tool-options">
+                                <button onclick="transformText('uppercase')">UPPERCASE</button>
+                                <button onclick="transformText('lowercase')">lowercase</button>
+                                <button onclick="transformText('titlecase')">Title Case</button>
+                                <button onclick="transformText('sentencecase')">Sentence case</button>
+                            </div>
+                            <div class="tool-options">
+                                <button onclick="countText()">Count Words/Characters</button>
+                                <button onclick="removeExtraSpaces()">Remove Extra Spaces</button>
+                                <button onclick="reverseText()">Reverse Text</button>
+                            </div>
+                            <div class="result" id="textResult">Result will appear here</div>
+                        </div>
+                    `;
+                case 'base64':
+                    return `
+                        <div class="tool-section">
+                            <div class="input-group">
+                                <label for="base64Input">Input</label>
+                                <textarea id="base64Input" rows="5" placeholder="Enter text to encode or base64 to decode"></textarea>
+                            </div>
+                            <div class="tool-options">
+                                <button onclick="base64Encode()">Encode to Base64</button>
+                                <button onclick="base64Decode()">Decode from Base64</button>
+                            </div>
+                            <div class="result" id="base64Result">Result will appear here</div>
+                            <button class="copy-btn" onclick="copyToClipboard('base64Result')">Copy Result</button>
+                        </div>
+                    `;
+                case 'url-encoder':
+                    return `
+                        <div class="tool-section">
+                            <div class="input-group">
+                                <label for="urlInput">URL</label>
+                                <input type="text" id="urlInput" placeholder="Enter URL to encode or decode">
+                            </div>
+                            <div class="tool-options">
+                                <button onclick="urlEncode()">URL Encode</button>
+                                <button onclick="urlDecode()">URL Decode</button>
+                            </div>
+                            <div class="result" id="urlResult">Result will appear here</div>
+                            <button class="copy-btn" onclick="copyToClipboard('urlResult')">Copy Result</button>
+                        </div>
+                    `;
+                case 'json-formatter':
+                    return `
+                        <div class="tool-section">
+                            <div class="input-group">
+                                <label for="jsonInput">JSON Input</label>
+                                <textarea id="jsonInput" rows="5" placeholder='{"name": "John", "age": 30}'></textarea>
+                            </div>
+                            <div class="tool-options">
+                                <button onclick="formatJSON()">Format JSON</button>
+                                <button onclick="validateJSON()">Validate JSON</button>
+                                <button onclick="minifyJSON()">Minify JSON</button>
+                            </div>
+                            <div class="result" id="jsonResult">Result will appear here</div>
+                            <button class="copy-btn" onclick="copyToClipboard('jsonResult')">Copy Result</button>
+                        </div>
+                    `;
+                case 'password-generator':
+                    return `
+                        <div class="tool-section">
+                            <div class="input-group">
+                                <label for="passwordLength">Password Length</label>
+                                <input type="number" id="passwordLength" value="12" min="4" max="64">
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="includeUppercase" checked>
+                                <label for="includeUppercase">Include Uppercase Letters</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="includeLowercase" checked>
+                                <label for="includeLowercase">Include Lowercase Letters</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="includeNumbers" checked>
+                                <label for="includeNumbers">Include Numbers</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="includeSymbols" checked>
+                                <label for="includeSymbols">Include Symbols</label>
+                            </div>
+                            <button onclick="generatePassword()">Generate Password</button>
+                            <div class="result" id="passwordResult">Your password will appear here</div>
+                            <button class="copy-btn" onclick="copyToClipboard('passwordResult')">Copy Password</button>
+                        </div>
+                    `;
+                case 'uuid-generator':
+                    return `
+                        <div class="tool-section">
+                            <div class="tool-options">
+                                <button onclick="generateUUID()">Generate UUID</button>
+                                <button onclick="generateMultipleUUIDs()">Generate 5 UUIDs</button>
+                            </div>
+                            <div class="result" id="uuidResult">UUID will appear here</div>
+                            <button class="copy-btn" onclick="copyToClipboard('uuidResult')">Copy UUID</button>
+                        </div>
+                    `;
+                case 'hash-generator':
+                    return `
+                        <div class="tool-section">
+                            <div class="input-group">
+                                <label for="hashInput">Input Text</label>
+                                <textarea id="hashInput" rows="5" placeholder="Enter text to hash"></textarea>
+                            </div>
+                            <div class="tool-options">
+                                <button onclick="generateHash('SHA-256')">SHA-256</button>
+                                <button onclick="generateHash('SHA-384')">SHA-384</button>
+                                <button onclick="generateHash('SHA-512')">SHA-512</button>
+                            </div>
+                            <div class="result" id="hashResult">Hash will appear here</div>
+                            <button class="copy-btn" onclick="copyToClipboard('hashResult')">Copy Hash</button>
+                        </div>
+                    `;
+                case 'image-resizer':
+                    return `
+                        <div class="tool-section">
+                            <div class="input-group">
+                                <label for="imageUpload">Upload Image</label>
+                                <input type="file" id="imageUpload" accept="image/*">
+                            </div>
+                            <div class="tool-options">
+                                <div class="option-group">
+                                    <label for="imageWidth">Width (px)</label>
+                                    <input type="number" id="imageWidth" placeholder="Auto">
+                                </div>
+                                <div class="option-group">
+                                    <label for="imageHeight">Height (px)</label>
+                                    <input type="number" id="imageHeight" placeholder="Auto">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="imageQuality">Quality (0.1 - 1.0)</label>
+                                <input type="number" id="imageQuality" min="0.1" max="1.0" step="0.1" value="0.8">
+                            </div>
+                            <button onclick="resizeImage()">Resize Image</button>
+                            <div class="result" id="imageResult">
+                                <div id="imagePreview"></div>
+                                <div id="imageInfo"></div>
+                            </div>
+                            <button class="copy-btn" id="downloadImageBtn" style="display: none;">Download Image</button>
+                        </div>
+                    `;
+                case 'color-picker':
+                    return `
+                        <div class="tool-section">
+                            <div class="input-group">
+                                <label for="colorPicker">Pick a Color</label>
+                                <input type="color" id="colorPicker" value="#4a90e2">
+                            </div>
+                            <div class="tool-options">
+                                <div class="option-group">
+                                    <label for="colorHex">Hex</label>
+                                    <input type="text" id="colorHex" value="#4a90e2">
+                                </div>
+                                <div class="option-group">
+                                    <label for="colorRgb">RGB</label>
+                                    <input type="text" id="colorRgb" value="rgb(74, 144, 226)">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="bgColorPicker">Background Color</label>
+                                <input type="color" id="bgColorPicker" value="#ffffff">
+                            </div>
+                            <button onclick="checkContrast()">Check Contrast</button>
+                            <div class="result" id="contrastResult">
+                                <div id="colorPreview" style="padding: 1rem; border-radius: 6px; margin-bottom: 1rem; text-align: center; font-weight: bold;">Sample Text</div>
+                                <div id="contrastInfo"></div>
+                            </div>
+                        </div>
+                    `;
+                case 'timer':
+                    return `
+                        <div class="tool-section">
+                            <h3>Stopwatch</h3>
+                            <div style="text-align: center; font-size: 3rem; margin: 1rem 0;" id="stopwatchDisplay">00:00:00</div>
+                            <div class="tool-options">
+                                <button onclick="startStopwatch()">Start</button>
+                                <button onclick="pauseStopwatch()">Pause</button>
+                                <button onclick="resetStopwatch()">Reset</button>
+                            </div>
+                        </div>
+                        <div class="tool-section">
+                            <h3>Countdown Timer</h3>
+                            <div class="input-group">
+                                <label for="timerMinutes">Minutes</label>
+                                <input type="number" id="timerMinutes" value="5" min="0">
+                            </div>
+                            <div class="input-group">
+                                <label for="timerSeconds">Seconds</label>
+                                <input type="number" id="timerSeconds" value="0" min="0" max="59">
+                            </div>
+                            <div style="text-align: center; font-size: 3rem; margin: 1rem 0;" id="timerDisplay">05:00</div>
+                            <div class="tool-options">
+                                <button onclick="startTimer()">Start</button>
+                                <button onclick="pauseTimer()">Pause</button>
+                                <button onclick="resetTimer()">Reset</button>
+                            </div>
+                        </div>
+                    `;
+                case 'notes':
+                    return `
+                        <div class="tool-section">
+                            <div class="input-group">
+                                <label for="notesTitle">Note Title</label>
+                                <input type="text" id="notesTitle" placeholder="Enter note title">
+                            </div>
+                            <div class="input-group">
+                                <label for="notesContent">Note Content</label>
+                                <textarea id="notesContent" rows="10" placeholder="Write your note here..."></textarea>
+                            </div>
+                            <div class="tool-options">
+                                <button onclick="saveNote()">Save Note</button>
+                                <button onclick="clearNote()">Clear</button>
+                            </div>
+                            <div class="input-group">
+                                <label for="savedNotes">Saved Notes</label>
+                                <select id="savedNotes" size="5" onchange="loadNote()"></select>
+                            </div>
+                            <div class="tool-options">
+                                <button onclick="deleteNote()">Delete Selected Note</button>
+                            </div>
+                        </div>
+                    `;
+                default:
+                    return `<p>Tool content not available.</p>`;
+            }
+        }
+
+        // Initialize tool functionality
+        function initToolFunctionality(toolId) {
+            switch (toolId) {
+                case 'calculator':
+                    clearCalc();
+                    break;
+                case 'color-picker':
+                    initColorPicker();
+                    break;
+                case 'notes':
+                    loadNotesList();
+                    break;
+                case 'timer':
+                    resetStopwatch();
+                    resetTimer();
+                    break;
+            }
+        }
+
+        // Calculator functions
+        let calcValue = '';
+
+        function appendToCalc(value) {
+            calcValue += value;
+            document.getElementById('calcDisplay').value = calcValue;
+        }
+
+        function clearCalc() {
+            calcValue = '';
+            document.getElementById('calcDisplay').value = '';
+        }
+
+        function calculate() {
+            try {
+                // Replace × with * for evaluation
+                const expression = calcValue.replace(/×/g, '*');
+                const result = eval(expression);
+                document.getElementById('calcDisplay').value = result;
+                calcValue = result.toString();
+            } catch (error) {
+                document.getElementById('calcDisplay').value = 'Error';
+                calcValue = '';
+            }
+        }
+
+        // Unit Converter functions
+        function convertUnits() {
+            const value = parseFloat(document.getElementById('converterValue').value);
+            const fromUnit = document.getElementById('converterFrom').value;
+            const toUnit = document.getElementById('converterTo').value;
+            
+            if (isNaN(value)) {
+                document.getElementById('converterResult').textContent = 'Please enter a valid number';
+                return;
+            }
+            
+            let result;
+            
+            // Temperature conversions
+            if (fromUnit === 'celsius' && toUnit === 'fahrenheit') {
+                result = (value * 9/5) + 32;
+            } else if (fromUnit === 'celsius' && toUnit === 'kelvin') {
+                result = value + 273.15;
+            } else if (fromUnit === 'fahrenheit' && toUnit === 'celsius') {
+                result = (value - 32) * 5/9;
+            } else if (fromUnit === 'fahrenheit' && toUnit === 'kelvin') {
+                result = (value - 32) * 5/9 + 273.15;
+            } else if (fromUnit === 'kelvin' && toUnit === 'celsius') {
+                result = value - 273.15;
+            } else if (fromUnit === 'kelvin' && toUnit === 'fahrenheit') {
+                result = (value - 273.15) * 9/5 + 32;
+            }
+            // Length conversions
+            else if (fromUnit === 'meter' && toUnit === 'kilometer') {
+                result = value / 1000;
+            } else if (fromUnit === 'meter' && toUnit === 'centimeter') {
+                result = value * 100;
+            } else if (fromUnit === 'meter' && toUnit === 'millimeter') {
+                result = value * 1000;
+            } else if (fromUnit === 'meter' && toUnit === 'mile') {
+                result = value / 1609.34;
+            } else if (fromUnit === 'meter' && toUnit === 'yard') {
+                result = value * 1.09361;
+            } else if (fromUnit === 'meter' && toUnit === 'foot') {
+                result = value * 3.28084;
+            } else if (fromUnit === 'meter' && toUnit === 'inch') {
+                result = value * 39.3701;
+            }
+            // Weight conversions
+            else if (fromUnit === 'kilogram' && toUnit === 'gram') {
+                result = value * 1000;
+            } else if (fromUnit === 'kilogram' && toUnit === 'pound') {
+                result = value * 2.20462;
+            } else if (fromUnit === 'kilogram' && toUnit === 'ounce') {
+                result = value * 35.274;
+            } else {
+                result = value; // Same unit
+            }
+            
+            document.getElementById('converterResult').textContent = `${value} ${fromUnit} = ${result.toFixed(4)} ${toUnit}`;
+        }
+
+        // Text Utilities functions
+        function transformText(type) {
+            const input = document.getElementById('textInput').value;
+            let result = '';
+            
+            switch (type) {
+                case 'uppercase':
+                    result = input.toUpperCase();
+                    break;
+                case 'lowercase':
+                    result = input.toLowerCase();
+                    break;
+                case 'titlecase':
+                    result = input.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+                    break;
+                case 'sentencecase':
+                    result = input.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s+\w)/g, c => c.toUpperCase());
+                    break;
+            }
+            
+            document.getElementById('textResult').textContent = result;
+        }
+
+        function countText() {
+            const input = document.getElementById('textInput').value;
+            const words = input.trim() === '' ? 0 : input.trim().split(/\s+/).length;
+            const characters = input.length;
+            const charactersNoSpaces = input.replace(/\s/g, '').length;
+            
+            document.getElementById('textResult').textContent = 
+                `Words: ${words} | Characters: ${characters} | Characters (no spaces): ${charactersNoSpaces}`;
+        }
+
+        function removeExtraSpaces() {
+            const input = document.getElementById('textInput').value;
+            const result = input.replace(/\s+/g, ' ').trim();
+            document.getElementById('textResult').textContent = result;
+        }
+
+        function reverseText() {
+            const input = document.getElementById('textInput').value;
+            const result = input.split('').reverse().join('');
+            document.getElementById('textResult').textContent = result;
+        }
+
+        // Base64 functions
+        function base64Encode() {
+            const input = document.getElementById('base64Input').value;
+            const result = btoa(unescape(encodeURIComponent(input)));
+            document.getElementById('base64Result').textContent = result;
+        }
+
+        function base64Decode() {
+            const input = document.getElementById('base64Input').value;
+            try {
+                const result = decodeURIComponent(escape(atob(input)));
+                document.getElementById('base64Result').textContent = result;
+            } catch (error) {
+                document.getElementById('base64Result').textContent = 'Invalid Base64 input';
+            }
+        }
+
+        // URL functions
+        function urlEncode() {
+            const input = document.getElementById('urlInput').value;
+            const result = encodeURIComponent(input);
+            document.getElementById('urlResult').textContent = result;
+        }
+
+        function urlDecode() {
+            const input = document.getElementById('urlInput').value;
+            try {
+                const result = decodeURIComponent(input);
+                document.getElementById('urlResult').textContent = result;
+            } catch (error) {
+                document.getElementById('urlResult').textContent = 'Invalid URL encoded input';
+            }
+        }
+
+        // JSON functions
+        function formatJSON() {
+            const input = document.getElementById('jsonInput').value;
+            try {
+                const parsed = JSON.parse(input);
+                const result = JSON.stringify(parsed, null, 2);
+                document.getElementById('jsonResult').textContent = result;
+            } catch (error) {
+                document.getElementById('jsonResult').textContent = 'Invalid JSON: ' + error.message;
+            }
+        }
+
+        function validateJSON() {
+            const input = document.getElementById('jsonInput').value;
+            try {
+                JSON.parse(input);
+                document.getElementById('jsonResult').textContent = 'Valid JSON';
+            } catch (error) {
+                document.getElementById('jsonResult').textContent = 'Invalid JSON: ' + error.message;
+            }
+        }
+
+        function minifyJSON() {
+            const input = document.getElementById('jsonInput').value;
+            try {
+                const parsed = JSON.parse(input);
+                const result = JSON.stringify(parsed);
+                document.getElementById('jsonResult').textContent = result;
+            } catch (error) {
+                document.getElementById('jsonResult').textContent = 'Invalid JSON: ' + error.message;
+            }
+        }
+
+        // Password Generator functions
+        function generatePassword() {
+            const length = parseInt(document.getElementById('passwordLength').value);
+            const includeUppercase = document.getElementById('includeUppercase').checked;
+            const includeLowercase = document.getElementById('includeLowercase').checked;
+            const includeNumbers = document.getElementById('includeNumbers').checked;
+            const includeSymbols = document.getElementById('includeSymbols').checked;
+            
+            const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const lowercase = 'abcdefghijklmnopqrstuvwxyz';
+            const numbers = '0123456789';
+            const symbols = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+            
+            let characters = '';
+            if (includeUppercase) characters += uppercase;
+            if (includeLowercase) characters += lowercase;
+            if (includeNumbers) characters += numbers;
+            if (includeSymbols) characters += symbols;
+            
+            if (characters === '') {
+                document.getElementById('passwordResult').textContent = 'Please select at least one character type';
+                return;
+            }
+            
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * characters.length);
+                password += characters[randomIndex];
+            }
+            
+            document.getElementById('passwordResult').textContent = password;
+        }
+
+        // UUID Generator functions
+        function generateUUID() {
+            const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0;
+                const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+            document.getElementById('uuidResult').textContent = uuid;
+        }
+
+        function generateMultipleUUIDs() {
+            let uuids = '';
+            for (let i = 0; i < 5; i++) {
+                const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                    const r = Math.random() * 16 | 0;
+                    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+                uuids += uuid + '\n';
+            }
+            document.getElementById('uuidResult').textContent = uuids.trim();
+        }
+
+        // Hash Generator functions
+        async function generateHash(algorithm) {
+            const input = document.getElementById('hashInput').value;
+            
+            if (!input) {
+                document.getElementById('hashResult').textContent = 'Please enter text to hash';
+                return;
+            }
+            
+            const encoder = new TextEncoder();
+            const data = encoder.encode(input);
+            
+            try {
+                const hashBuffer = await crypto.subtle.digest(algorithm, data);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                document.getElementById('hashResult').textContent = hashHex;
+            } catch (error) {
+                document.getElementById('hashResult').textContent = 'Error generating hash: ' + error.message;
+            }
+        }
+
+        // Image Resizer functions
+        function resizeImage() {
+            const fileInput = document.getElementById('imageUpload');
+            const width = document.getElementById('imageWidth').value;
+            const height = document.getElementById('imageHeight').value;
+            const quality = parseFloat(document.getElementById('imageQuality').value);
+            
+            if (!fileInput.files[0]) {
+                alert('Please select an image file');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Calculate new dimensions
+                    let newWidth = width ? parseInt(width) : img.width;
+                    let newHeight = height ? parseInt(height) : img.height;
+                    
+                    // Maintain aspect ratio if only one dimension is provided
+                    if (width && !height) {
+                        newHeight = (img.height / img.width) * newWidth;
+                    } else if (height && !width) {
+                        newWidth = (img.width / img.height) * newHeight;
+                    }
+                    
+                    canvas.width = newWidth;
+                    canvas.height = newHeight;
+                    
+                    // Draw image on canvas
+                    ctx.drawImage(img, 0, 0, newWidth, newHeight);
+                    
+                    // Get resized image data
+                    const resizedDataUrl = canvas.toDataURL('image/jpeg', quality);
+                    
+                    // Display preview
+                    document.getElementById('imagePreview').innerHTML = `<img src="${resizedDataUrl}" style="max-width: 100%; border-radius: 6px;">`;
+                    
+                    // Display image info
+                    const originalSize = (file.size / 1024).toFixed(2);
+                    const resizedSize = (resizedDataUrl.length * 0.75 / 1024).toFixed(2); // Approximate size
+                    document.getElementById('imageInfo').innerHTML = `
+                        <div>Original: ${img.width}×${img.height} (${originalSize} KB)</div>
+                        <div>Resized: ${newWidth}×${newHeight} (${resizedSize} KB)</div>
+                    `;
+                    
+                    // Set up download button
+                    const downloadBtn = document.getElementById('downloadImageBtn');
+                    downloadBtn.style.display = 'block';
+                    downloadBtn.onclick = function() {
+                        const a = document.createElement('a');
+                        a.href = resizedDataUrl;
+                        a.download = 'resized-image.jpg';
+                        a.click();
+                    };
+                };
+                img.src = e.target.result;
+            };
+            
+            reader.readAsDataURL(file);
+        }
+
+        // Color Picker functions
+        function initColorPicker() {
+            const colorPicker = document.getElementById('colorPicker');
+            const hexInput = document.getElementById('colorHex');
+            const rgbInput = document.getElementById('colorRgb');
+            const bgColorPicker = document.getElementById('bgColorPicker');
+            const colorPreview = document.getElementById('colorPreview');
+            
+            colorPicker.addEventListener('input', updateColorFromPicker);
+            hexInput.addEventListener('input', updateColorFromHex);
+            bgColorPicker.addEventListener('input', updateBackgroundColor);
+            
+            updateColorFromPicker();
+            updateBackgroundColor();
+        }
+
+        function updateColorFromPicker() {
+            const color = document.getElementById('colorPicker').value;
+            document.getElementById('colorHex').value = color;
+            
+            // Convert hex to RGB
+            const r = parseInt(color.substr(1, 2), 16);
+            const g = parseInt(color.substr(3, 2), 16);
+            const b = parseInt(color.substr(5, 2), 16);
+            document.getElementById('colorRgb').value = `rgb(${r}, ${g}, ${b})`;
+            
+            updateColorPreview();
+        }
+
+        function updateColorFromHex() {
+            const hex = document.getElementById('colorHex').value;
+            if (/^#[0-9A-F]{6}$/i.test(hex)) {
+                document.getElementById('colorPicker').value = hex;
+                updateColorFromPicker();
+            }
+        }
+
+        function updateBackgroundColor() {
+            const bgColor = document.getElementById('bgColorPicker').value;
+            updateColorPreview();
+        }
+
+        function updateColorPreview() {
+            const color = document.getElementById('colorPicker').value;
+            const bgColor = document.getElementById('bgColorPicker').value;
+            const colorPreview = document.getElementById('colorPreview');
+            
+            colorPreview.style.color = color;
+            colorPreview.style.backgroundColor = bgColor;
+        }
+
+        function checkContrast() {
+            const color = document.getElementById('colorPicker').value;
+            const bgColor = document.getElementById('bgColorPicker').value;
+            
+            // Convert hex to RGB
+            const r1 = parseInt(color.substr(1, 2), 16) / 255;
+            const g1 = parseInt(color.substr(3, 2), 16) / 255;
+            const b1 = parseInt(color.substr(5, 2), 16) / 255;
+            
+            const r2 = parseInt(bgColor.substr(1, 2), 16) / 255;
+            const g2 = parseInt(bgColor.substr(3, 2), 16) / 255;
+            const b2 = parseInt(bgColor.substr(5, 2), 16) / 255;
+            
+            // Calculate relative luminance
+            const luminance1 = calculateLuminance(r1, g1, b1);
+            const luminance2 = calculateLuminance(r2, g2, b2);
+            
+            // Calculate contrast ratio
+            const contrast = luminance1 > luminance2 
+                ? (luminance1 + 0.05) / (luminance2 + 0.05)
+                : (luminance2 + 0.05) / (luminance1 + 0.05);
+            
+            let rating = '';
+            if (contrast >= 7) {
+                rating = 'AAA (Excellent)';
+            } else if (contrast >= 4.5) {
+                rating = 'AA (Good)';
+            } else if (contrast >= 3) {
+                rating = 'AA (Large Text)';
+            } else {
+                rating = 'Fail';
+            }
+            
+            document.getElementById('contrastInfo').innerHTML = `
+                <div>Contrast Ratio: ${contrast.toFixed(2)}:1</div>
+                <div>WCAG Rating: ${rating}</div>
+            `;
+        }
+
+        function calculateLuminance(r, g, b) {
+            const rsRGB = r <= 0.03928 ? r / 12.92 : Math.pow((r + 0.055) / 1.055, 2.4);
+            const gsRGB = g <= 0.03928 ? g / 12.92 : Math.pow((g + 0.055) / 1.055, 2.4);
+            const bsRGB = b <= 0.03928 ? b / 12.92 : Math.pow((b + 0.055) / 1.055, 2.4);
+            
+            return 0.2126 * rsRGB + 0.7152 * gsRGB + 0.0722 * bsRGB;
+        }
+
+        // Timer functions
+        let stopwatchInterval;
+        let stopwatchTime = 0;
+        let stopwatchRunning = false;
+
+        let timerInterval;
+        let timerTime = 0;
+        let timerRunning = false;
+
+        function startStopwatch() {
+            if (!stopwatchRunning) {
+                stopwatchRunning = true;
+                const startTime = Date.now() - stopwatchTime;
+                stopwatchInterval = setInterval(() => {
+                    stopwatchTime = Date.now() - startTime;
+                    updateStopwatchDisplay();
+                }, 10);
+            }
+        }
+
+        function pauseStopwatch() {
+            stopwatchRunning = false;
+            clearInterval(stopwatchInterval);
+        }
+
+        function resetStopwatch() {
+            stopwatchRunning = false;
+            clearInterval(stopwatchInterval);
+            stopwatchTime = 0;
+            updateStopwatchDisplay();
+        }
+
+        function updateStopwatchDisplay() {
+            const hours = Math.floor(stopwatchTime / 3600000);
+            const minutes = Math.floor((stopwatchTime % 3600000) / 60000);
+            const seconds = Math.floor((stopwatchTime % 60000) / 1000);
+            const milliseconds = Math.floor((stopwatchTime % 1000) / 10);
+            
+            document.getElementById('stopwatchDisplay').textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (!timerRunning) {
+                const minutes = parseInt(document.getElementById('timerMinutes').value) || 0;
+                const seconds = parseInt(document.getElementById('timerSeconds').value) || 0;
+                timerTime = (minutes * 60 + seconds) * 1000;
+                
+                if (timerTime <= 0) {
+                    alert('Please set a valid time');
+                    return;
+                }
+                
+                timerRunning = true;
+                const startTime = Date.now();
+                timerInterval = setInterval(() => {
+                    const elapsed = Date.now() - startTime;
+                    const remaining = timerTime - elapsed;
+                    
+                    if (remaining <= 0) {
+                        clearInterval(timerInterval);
+                        timerRunning = false;
+                        document.getElementById('timerDisplay').textContent = '00:00';
+                        alert('Timer finished!');
+                        return;
+                    }
+                    
+                    updateTimerDisplay(remaining);
+                }, 10);
+            }
+        }
+
+        function pauseTimer() {
+            timerRunning = false;
+            clearInterval(timerInterval);
+        }
+
+        function resetTimer() {
+            timerRunning = false;
+            clearInterval(timerInterval);
+            const minutes = parseInt(document.getElementById('timerMinutes').value) || 0;
+            const seconds = parseInt(document.getElementById('timerSeconds').value) || 0;
+            timerTime = (minutes * 60 + seconds) * 1000;
+            updateTimerDisplay(timerTime);
+        }
+
+        function updateTimerDisplay(time) {
+            const minutes = Math.floor(time / 60000);
+            const seconds = Math.floor((time % 60000) / 1000);
+            const milliseconds = Math.floor((time % 1000) / 10);
+            
+            document.getElementById('timerDisplay').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Notes functions
+        function saveNote() {
+            const title = document.getElementById('notesTitle').value.trim();
+            const content = document.getElementById('notesContent').value;
+            
+            if (!title) {
+                alert('Please enter a note title');
+                return;
+            }
+            
+            const notes = JSON.parse(localStorage.getItem('toolsPackNotes') || '{}');
+            notes[title] = content;
+            localStorage.setItem('toolsPackNotes', JSON.stringify(notes));
+            
+            loadNotesList();
+            alert('Note saved successfully');
+        }
+
+        function loadNote() {
+            const select = document.getElementById('savedNotes');
+            const title = select.value;
+            
+            if (title) {
+                const notes = JSON.parse(localStorage.getItem('toolsPackNotes') || '{}');
+                document.getElementById('notesTitle').value = title;
+                document.getElementById('notesContent').value = notes[title] || '';
+            }
+        }
+
+        function clearNote() {
+            document.getElementById('notesTitle').value = '';
+            document.getElementById('notesContent').value = '';
+        }
+
+        function deleteNote() {
+            const select = document.getElementById('savedNotes');
+            const title = select.value;
+            
+            if (title && confirm(`Are you sure you want to delete "${title}"?`)) {
+                const notes = JSON.parse(localStorage.getItem('toolsPackNotes') || '{}');
+                delete notes[title];
+                localStorage.setItem('toolsPackNotes', JSON.stringify(notes));
+                
+                loadNotesList();
+                clearNote();
+            }
+        }
+
+        function loadNotesList() {
+            const select = document.getElementById('savedNotes');
+            select.innerHTML = '';
+            
+            const notes = JSON.parse(localStorage.getItem('toolsPackNotes') || '{}');
+            Object.keys(notes).forEach(title => {
+                const option = document.createElement('option');
+                option.value = title;
+                option.textContent = title;
+                select.appendChild(option);
+            });
+        }
+
+        // Utility functions
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', () => {
+            initToolsGrid();
+        });
+    </script>
+</body>
+</html>
